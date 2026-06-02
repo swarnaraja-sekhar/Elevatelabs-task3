@@ -1,0 +1,301 @@
+{
+  "info": {
+    "name": "Book API",
+    "_postman_id": "book-api-collection-v1",
+    "description": "Complete Postman collection for the Node.js + Express Book API.\nCovers all CRUD endpoints, search/filter, validation errors, and edge cases.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": [""]
+        },
+        "description": "Verify the server is running and see available endpoints."
+      }
+    },
+    {
+      "name": "Get All Books",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books"]
+        },
+        "description": "Returns all books stored in memory."
+      }
+    },
+    {
+      "name": "Search Books by Title",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books?title=gatsby",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books"],
+          "query": [
+            {
+              "key": "title",
+              "value": "gatsby"
+            }
+          ]
+        },
+        "description": "Case-insensitive, partial-match search on book title."
+      }
+    },
+    {
+      "name": "Filter Books by Author",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books?author=orwell",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books"],
+          "query": [
+            {
+              "key": "author",
+              "value": "orwell"
+            }
+          ]
+        },
+        "description": "Case-insensitive, partial-match filter on book author."
+      }
+    },
+    {
+      "name": "Get Book by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "1"]
+        },
+        "description": "Retrieve a single book by its numeric ID."
+      }
+    },
+    {
+      "name": "Get Book by ID — 404 Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "999"]
+        },
+        "description": "Should return 404 — book with ID 999 does not exist."
+      }
+    },
+    {
+      "name": "Create Book — Atomic Habits",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Atomic Habits\",\n  \"author\": \"James Clear\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books"]
+        },
+        "description": "Create a new book. Returns 201 Created with the new book object."
+      }
+    },
+    {
+      "name": "Create Book — Missing Fields (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Incomplete Book\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books"]
+        },
+        "description": "Should return 400 — 'author' field is missing."
+      }
+    },
+    {
+      "name": "Create Book — Empty Body (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books"]
+        },
+        "description": "Should return 400 — both title and author are required."
+      }
+    },
+    {
+      "name": "Update Book — Title Only",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"The Great Gatsby (Revised Edition)\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/books/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "1"]
+        },
+        "description": "Partial update — only title is changed. updatedAt is refreshed."
+      }
+    },
+    {
+      "name": "Update Book — Both Fields",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Animal Farm\",\n  \"author\": \"George Orwell\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/books/3",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "3"]
+        },
+        "description": "Full update — both title and author fields are changed."
+      }
+    },
+    {
+      "name": "Update Book — 404 Not Found",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Ghost Book\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/books/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "999"]
+        },
+        "description": "Should return 404 — book with ID 999 does not exist."
+      }
+    },
+    {
+      "name": "Delete Book",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books/2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "2"]
+        },
+        "description": "Delete book with ID 2. Returns the deleted book as confirmation."
+      }
+    },
+    {
+      "name": "Delete Book — 404 Not Found",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/books/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["books", "999"]
+        },
+        "description": "Should return 404 — book with ID 999 does not exist."
+      }
+    },
+    {
+      "name": "Unknown Route — 404",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/unknown-route",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["unknown-route"]
+        },
+        "description": "Should return 404 via the notFound middleware."
+      }
+    }
+  ]
+}
